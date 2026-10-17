@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#1877f2"><meta name="description" content="My Babies community — baby essentials, nursery finds, videos and customer enquiries.">
+<title>My Babies Community | Social & Marketplace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+ <a class="brand" href="#home" aria-label="My Babies home"><span class="brand-mark">mb</span></a>
+ <label class="top-search"><span>⌕</span><input id="globalSearch" placeholder="Search My Babies" aria-label="Search posts and products"></label>
+ <nav class="top-nav" aria-label="Main navigation">
+  <button class="top-link active" data-page="home" title="Home"><span>⌂</span><small>Home</small></button>
+  <button class="top-link" data-page="watch" title="Watch videos"><span>▷</span><small>Watch</small></button>
+  <button class="top-link" data-page="marketplace" title="Marketplace"><span>▦</span><small>Marketplace</small></button>
+  <button class="top-link" data-page="groups" title="Groups"><span>♧</span><small>Groups</small></button>
+ </nav>
+ <div class="top-actions">
+  <button class="circle-btn" data-page="messages" aria-label="Messages" title="Messages">▤</button>
+  <button class="circle-btn" data-page="notifications" aria-label="Notifications" title="Notifications">♧<i class="tiny-dot"></i></button>
+  <button class="profile-chip" id="profileButton"><span class="avatar">MB</span><b>My Babies</b>⌄</button>
+ </div>
+</header>
+<div class="demo-strip"><strong>Preview mode</strong> — likes, comments and saved items are stored in this browser only. Customer accounts and shared live activity need backend setup.</div>
+<div class="layout">
+ <aside class="left-sidebar">
+  <button class="side-item" data-page="profile"><span class="avatar">MB</span><b>My Babies</b></button>
+  <button class="side-item selected" data-page="home"><span class="side-icon">⌂</span>Home feed</button>
+  <button class="side-item" data-page="watch"><span class="side-icon">▷</span>Watch / Videos</button>
+  <button class="side-item" data-page="marketplace"><span class="side-icon">▦</span>Marketplace</button>
+  <button class="side-item" data-page="groups"><span class="side-icon">♧</span>Customer groups</button>
+  <button class="side-item" data-page="saved"><span class="side-icon">♡</span>Saved items</button>
+  <button class="side-item" data-page="messages"><span class="side-icon">▤</span>Messages</button>
+  <button class="side-item" data-page="notifications"><span class="side-icon">♧</span>Notifications</button>
+  <div class="sidebar-divider"></div>
+  <div class="side-caption">YOUR BUSINESS</div>
+  <button class="side-item" data-page="about"><span class="side-icon">ⓘ</span>About My Babies</button>
+  <a class="side-item" href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer"><span class="facebook-f">f</span>Visit Facebook ↗</a>
+  <div class="sidebar-note">A My Babies customer community. Independently operated and not affiliated with Meta.</div>
+ </aside>
+ <main id="mainContent" class="main-content"></main>
+ <aside class="right-sidebar">
+  <section class="right-card business-card">
+   <div class="card-kicker">WELCOME TO</div><div class="business-logo">MB</div>
+   <h2>My Babies</h2><p>Baby • Nursery • Essentials</p>
+   <div class="business-stat"><span>Product photos</span><b>78</b></div>
+   <div class="business-stat"><span>Ordering</span><b>WhatsApp enquiry</b></div>
+   <a class="button primary wide" href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">Visit Facebook ↗</a>
+  </section>
+  <section class="right-card">
+   <div class="section-title small-title">Featured products <button class="text-link" data-page="marketplace">See all</button></div>
+   <div id="featuredProducts"></div>
+  </section>
+  <section class="right-card"><div class="section-title small-title">Customer help</div><p class="muted small">Need a price, size, availability or delivery detail? Ask us directly before ordering.</p><button class="button outline wide" id="helpButton">Ask My Babies</button></section>
+  <footer class="right-footer">Privacy · Terms · Community guidelines<br>© 2026 My Babies</footer>
+ </aside>
+</div>
+<div class="mobile-nav">
+ <button data-page="home" class="active"><span>⌂</span>Home</button><button data-page="watch"><span>▷</span>Watch</button><button data-page="marketplace"><span>▦</span>Shop</button><button data-page="groups"><span>♧</span>Groups</button><button data-page="messages"><span>▤</span>Inbox</button>
+</div>
+<div class="modal" id="modal" aria-hidden="true"><div class="modal-shade" data-close></div><section class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><button class="modal-x" data-close aria-label="Close">×</button><div id="modalBody"></div></section></div>
+<script>
+const WHATSAPP_NUMBER = ""; // Add verified number, e.g. 27821234567
+const FACEBOOK_PAGE_URL = ""; // Optional: paste the real My Babies Facebook page URL
+const PRODUCTS = [
+  {
+    "id": 1,
+    "image": "assets/images/product-01.jpg",
+    "original_name": "663037224_835673205488561_769599288036785677_n.jpg"
+  },
+  {
+    "id": 2,
+    "image": "assets/images/product-02.jpg",
+    "original_name": "737645580_2545797282541616_1078521645981065660_n.jpg"
+  },
+  {
+    "id": 3,
+    "image": "assets/images/product-03.jpg",
+    "original_name": "737827257_1834724664158014_2528967841420121750_n.jpg"
+  },
+  {
+    "id": 4,
+    "image": "assets/images/product-04.jpg",
+    "original_name": "737845593_1686496479069709_1362924765117983164_n.jpg"
+  },
+  {
+    "id": 5,
+    "image": "assets/images/product-05.jpg",
+    "original_name": "738261672_3076753909185827_5545838260744612531_n.jpg"
+  },
+  {
+    "id": 6,
+    "image": "assets/images/product-06.jpg",
+    "original_name": "738335395_2078564359401022_3417671947514078383_n.jpg"
+  },
+  {
+    "id": 7,
+    "image": "assets/images/product-07.jpg",
+    "original_name": "738503917_1329871052136620_3848437661625032479_n.jpg"
+  },
+  {
+    "id": 8,
+    "image": "assets/images/product-08.jpg",
+    "original_name": "738511827_3049056868622533_6803130067453349080_n.jpg"
+  },
+  {
+    "id": 9,
+    "image": "assets/images/product-09.jpg",
+    "original_name": "738653502_1977489952898123_6735362429703298625_n.jpg"
+  },
+  {
+    "id": 10,
+    "image": "assets/images/product-10.jpg",
+    "original_name": "738828999_1737907440559757_3883953163636780416_n.jpg"
+  },
+  {
+    "id": 11,
+    "image": "assets/images/product-11.jpg",
+    "original_name": "738916362_27394219943551224_8490235494995649468_n.jpg"
+  },
+  {
+    "id": 12,
+    "image": "assets/images/product-12.jpg",
+    "original_name": "739101203_1063348792933074_2705009757621250635_n.jpg"
+  },
+  {
+    "id": 13,
+    "image": "assets/images/product-13.jpg",
+    "original_name": "739214773_1922436001780830_7303328971435443018_n.jpg"
+  },
+  {
+    "id": 14,
+    "image": "assets/images/product-14.jpg",
+    "original_name": "739264498_2170615437066413_4372496190773124282_n.jpg"
+  },
+  {
+    "id": 15,
+    "image": "assets/images/product-15.jpg",
+    "original_name": "739276902_1440989541123725_4204179466626762939_n.jpg"
+  },
+  {
+    "id": 16,
+    "image": "assets/images/product-16.jpg",
+    "original_name": "739295071_4200869986719769_2446035526987208228_n.jpg"
+  },
+  {
+    "id": 17,
+    "image": "assets/images/product-17.jpg",
+    "original_name": "739295137_981349044962860_1964257120557310763_n.jpg"
+  },
+  {
+    "id": 18,
+    "image": "assets/images/product-18.jpg",
+    "original_name": "739332355_1011856688410125_7636354726921996910_n.jpg"
+  },
+  {
+    "id": 19,
+    "image": "assets/images/product-19.jpg",
+    "original_name": "739470777_971595622547764_4687704927609538396_n.jpg"
+  },
+  {
+    "id": 20,
+    "image": "assets/images/product-20.jpg",
+    "original_name": "739553236_1824917045153203_1648198114121122806_n.jpg"
+  },
+  {
+    "id": 21,
+    "image": "assets/images/product-21.jpg",
+    "original_name": "739561569_1325981922994630_1182262358134919998_n.jpg"
+  },
+  {
+    "id": 22,
+    "image": "assets/images/product-22.jpg",
+    "original_name": "739578959_1587962046019855_8606737245290938423_n.jpg"
+  },
+  {
+    "id": 23,
+    "image": "assets/images/product-23.jpg",
+    "original_name": "739609681_1720242972649751_4067720171234185316_n.jpg"
+  },
+  {
+    "id": 24,
+    "image": "assets/images/product-24.jpg",
+    "original_name": "739782163_1047907654245116_4087894225723303393_n.jpg"
+  },
+  {
+    "id": 25,
+    "image": "assets/images/product-25.jpg",
+    "original_name": "739794826_904423735303773_2445302237264203634_n.jpg"
+  },
+  {
+    "id": 26,
+    "image": "assets/images/product-26.jpg",
+    "original_name": "740079430_2313330782408465_2153632360507829864_n.jpg"
+  },
+  {
+    "id": 27,
+    "image": "assets/images/product-27.jpg",
+    "original_name": "740184135_1728254041650909_5167271005427164507_n.jpg"
+  },
+  {
+    "id": 28,
+    "image": "assets/images/product-28.jpg",
+    "original_name": "740215621_1222934017565893_6767510064114565199_n.jpg"
+  },
+  {
+    "id": 29,
+    "image": "assets/images/product-29.jpg",
+    "original_name": "740224778_1060624849727678_5653780521911639615_n.jpg"
+  },
+  {
+    "id": 30,
+    "image": "assets/images/product-30.jpg",
+    "original_name": "740271393_1050797574059019_2014981794520690201_n.jpg"
+  },
+  {
+    "id": 31,
+    "image": "assets/images/product-31.jpg",
+    "original_name": "740272019_1953533459366962_8919343935885881666_n.jpg"
+  },
+  {
+    "id": 32,
+    "image": "assets/images/product-32.jpg",
+    "original_name": "740326094_1741507766855996_7239840336810540841_n.jpg"
+  },
+  {
+    "id": 33,
+    "image": "assets/images/product-33.jpg",
+    "original_name": "740356246_960120900393516_3489026567515211085_n.jpg"
+  },
+  {
+    "id": 34,
+    "image": "assets/images/product-34.jpg",
+    "original_name": "740445840_27396074073392289_399443953878370008_n.jpg"
+  },
+  {
+    "id": 35,
+    "image": "assets/images/product-35.jpg",
+    "original_name": "740507982_1651719282583704_3394174880009427825_n.jpg"
+  },
+  {
+    "id": 36,
+    "image": "assets/images/product-36.jpg",
+    "original_name": "740611659_1352328270210630_8990478672449500903_n.jpg"
+  },
+  {
+    "id": 37,
+    "image": "assets/images/product-37.jpg",
+    "original_name": "740722950_1738024617434395_1839363925272586556_n.jpg"
+  },
+  {
+    "id": 38,
+    "image": "assets/images/product-38.jpg",
+    "original_name": "740754128_825351553877795_7310934752920515312_n.jpg"
+  },
+  {
+    "id": 39,
+    "image": "assets/images/product-39.jpg",
+    "original_name": "740821780_1016802354272201_319390195171403466_n.jpg"
+  },
+  {
+    "id": 40,
+    "image": "assets/images/product-40.jpg",
+    "original_name": "740836267_2484835455369113_4562649869392526167_n.jpg"
+  },
+  {
+    "id": 41,
+    "image": "assets/images/product-41.jpg",
+    "original_name": "740953750_3330717177135210_5598126896599007970_n.jpg"
+  },
+  {
+    "id": 42,
+    "image": "assets/images/product-42.jpg",
+    "original_name": "741047180_1679336973356407_4740170020586455889_n.jpg"
+  },
+  {
+    "id": 43,
+    "image": "assets/images/product-43.jpg",
+    "original_name": "741057218_4432663086990954_3732439814777834769_n.jpg"
+  },
+  {
+    "id": 44,
+    "image": "assets/images/product-44.jpg",
+    "original_name": "741428323_2086019685316761_3384988719581172059_n.jpg"
+  },
+  {
+    "id": 45,
+    "image": "assets/images/product-45.jpg",
+    "original_name": "741620025_949355874795370_589886487723011533_n.jpg"
+  },
+  {
+    "id": 46,
+    "image": "assets/images/product-46.jpg",
+    "original_name": "758904783_4562034657349756_8252242383207602964_n.jpg"
+  },
+  {
+    "id": 47,
+    "image": "assets/images/product-47.jpg",
+    "original_name": "774036815_1344126817508808_5651663532888909264_n.jpg"
+  },
+  {
+    "id": 48,
+    "image": "assets/images/product-48.jpg",
+    "original_name": "774512653_2161201938167048_3248318965734545997_n.jpg"
+  },
+  {
+    "id": 49,
+    "image": "assets/images/product-49.jpg",
+    "original_name": "775154454_2996966043982158_8791358771849878237_n.jpg"
+  },
+  {
+    "id": 50,
+    "image": "assets/images/product-50.jpg",
+    "original_name": "775213670_1537921114210287_8982098942985994870_n.jpg"
+  },
+  {
+    "id": 51,
+    "image": "assets/images/product-51.jpg",
+    "original_name": "775272349_1199861545670749_8239302099408666604_n.jpg"
+  },
+  {
+    "id": 52,
+    "image": "assets/images/product-52.jpg",
+    "original_name": "775904751_1031681029487298_3612096606775398393_n.jpg"
+  },
+  {
+    "id": 53,
+    "image": "assets/images/product-53.jpg",
+    "original_name": "776252917_1375844480654368_3082067332845987514_n.jpg"
+  },
+  {
+    "id": 54,
+    "image": "assets/images/product-54.jpg",
+    "original_name": "777508191_983866071325447_8882467367345302693_n.jpg"
+  },
+  {
+    "id": 55,
+    "image": "assets/images/product-55.jpg",
+    "original_name": "777515668_1594020772276538_5244322078327215479_n.jpg"
+  },
+  {
+    "id": 56,
+    "image": "assets/images/product-56.jpg",
+    "original_name": "789049458_1076254375328636_816451235340376758_n.jpg"
+  },
+  {
+    "id": 57,
+    "image": "assets/images/product-57.jpg",
+    "original_name": "789187490_1076255148661892_4962710386215646439_n.jpg"
+  },
+  {
+    "id": 58,
+    "image": "assets/images/product-58.jpg",
+    "original_name": "789432066_1076255458661861_2034457717720525026_n.jpg"
+  },
+  {
+    "id": 59,
+    "image": "assets/images/product-59.jpg",
+    "original_name": "789606094_1076254978661909_7152575049064608195_n.jpg"
+  },
+  {
+    "id": 60,
+    "image": "assets/images/product-60.jpg",
+    "original_name": "789760283_1076254445328629_4892739731330512973_n.jpg"
+  },
+  {
+    "id": 61,
+    "image": "assets/images/product-61.jpg",
+    "original_name": "789934533_1076254511995289_4768272991293629495_n.jpg"
+  },
+  {
+    "id": 62,
+    "image": "assets/images/product-62.jpg",
+    "original_name": "789934533_1076254578661949_6584773519380560640_n.jpg"
+  },
+  {
+    "id": 63,
+    "image": "assets/images/product-63.jpg",
+    "original_name": "790121101_1076255255328548_4923314939517773421_n.jpg"
+  },
+  {
+    "id": 64,
+    "image": "assets/images/product-64.jpg",
+    "original_name": "791384712_1076254821995258_9026068539441868335_n.jpg"
+  },
+  {
+    "id": 65,
+    "image": "assets/images/product-65.jpg",
+    "original_name": "792191675_18585762877066989_6955840903636631361_n.jpg"
+  },
+  {
+    "id": 66,
+    "image": "assets/images/product-66.jpg",
+    "original_name": "793869182_1062153920121615_4221486450740041685_n.jpg"
+  },
+  {
+    "id": 67,
+    "image": "assets/images/product-67.jpg",
+    "original_name": "794826637_2149671302427662_816836347098634575_n.jpg"
+  },
+  {
+    "id": 68,
+    "image": "assets/images/product-68.jpg",
+    "original_name": "796639869_1549046670571461_5683155928068952500_n.jpg"
+  },
+  {
+    "id": 69,
+    "image": "assets/images/product-69.jpg",
+    "original_name": "812132913_1549046503904811_6141911138649752796_n.jpg"
+  },
+  {
+    "id": 70,
+    "image": "assets/images/product-70.jpg",
+    "original_name": "815469886_2149671212427671_753361036158799710_n.jpg"
+  },
+  {
+    "id": 71,
+    "image": "assets/images/product-71.jpg",
+    "original_name": "816861526_2149671342427658_3790043671263488783_n.jpg"
+  },
+  {
+    "id": 72,
+    "image": "assets/images/product-72.jpg",
+    "original_name": "817191997_2149671239094335_1582306262766423837_n.jpg"
+  },
+  {
+    "id": 73,
+    "image": "assets/images/product-73.jpg",
+    "original_name": "817742734_2149671182427674_3332487761070805028_n.jpg"
+  },
+  {
+    "id": 74,
+    "image": "assets/images/product-74.jpg",
+    "original_name": "818063842_2149671269094332_6220104597383969492_n.jpg"
+  },
+  {
+    "id": 75,
+    "image": "assets/images/product-75.jpg",
+    "original_name": "819012175_10175838288935717_1332153189977959129_n.jpg"
+  },
+  {
+    "id": 76,
+    "image": "assets/images/product-76.jpg",
+    "original_name": "images (1).jpg"
+  },
+  {
+    "id": 77,
+    "image": "assets/images/product-77.jpg",
+    "original_name": "images (2).jpg"
+  },
+  {
+    "id": 78,
+    "image": "assets/images/product-78.jpg",
+    "original_name": "images.jpg"
+  }
+];
+const state = {page:"home", query:"", category:"All", postLikes:read("mb-likes",{}), comments:read("mb-comments",{}), saved:read("mb-saved",[]), userPosts:read("mb-posts",[]), joined:read("mb-groups",[]), notifications:read("mb-notifications",[]), activeProduct:null};
+function read(k,f){try{return JSON.parse(localStorage.getItem(k)) ?? f}catch{return f}}
+function write(k,v){localStorage.setItem(k,JSON.stringify(v))}
+function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function productName(p){return "Baby Product "+String(p.id).padStart(2,"0")}
+function waUrl(p=null){let msg=p?`Hello My Babies, I would like to enquire about ${productName(p)} (Product ${String(p.id).padStart(2,"0")}). Please confirm the current price, availability and delivery/collection options.`:"Hello My Babies, I would like to enquire about your baby and nursery products.";let n=WHATSAPP_NUMBER.trim();return n?`https://wa.me/${n}?text=${encodeURIComponent(msg)}`:`https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`}
+function contactLink(p=null){return `<a class="button green" target="_blank" rel="noopener noreferrer" href="${waUrl(p)}">☏ ${p?"Ask / order on WhatsApp":"Contact on WhatsApp"}</a>`}
+function fbLink(){return FACEBOOK_PAGE_URL.trim()||"https://www.facebook.com/"}
+function go(page){state.page=page;document.querySelectorAll("[data-page]").forEach(b=>b.classList.toggle("active",b.dataset.page===page));render()}
+document.querySelectorAll("[data-page]").forEach(b=>b.addEventListener("click",()=>go(b.dataset.page)));
+document.getElementById("globalSearch").addEventListener("input",e=>{state.query=e.target.value;if(state.page!=="marketplace"){go("marketplace");document.getElementById("globalSearch").focus()}else{render();document.getElementById("globalSearch").focus()}});
+document.getElementById("profileButton").addEventListener("click",()=>go("profile"));
+document.getElementById("helpButton").addEventListener("click",()=>openMessage("Ask My Babies"));
+function header(title,desc,extra=""){return `<div class="page-heading"><div><div class="eyebrow">MY BABIES COMMUNITY</div><h1>${title}</h1><p>${desc}</p></div>${extra}</div>`}
+function composer(){return `<section class="composer panel"><div class="composer-top"><span class="avatar">MB</span><button id="openComposer" class="composer-prompt">Share an update with the community…</button></div><div class="composer-bottom"><button data-page="watch">▷ Video / Watch</button><button data-page="marketplace">▧ Product</button><button id="writePost">＋ Create post</button></div></section>`}
+function postCard(post){let id=String(post.id),liked=!!state.postLikes[id],comments=state.comments[id]||[];return `<article class="panel post"><div class="post-head"><span class="avatar">${post.user==="You"?"YOU":"MB"}</span><div class="post-author"><b>${esc(post.user||"My Babies")}</b><span>${esc(post.time||"Community update")} · 🌐</span></div><button class="more-button" aria-label="Post options" data-report="${esc(id)}">•••</button></div><div class="post-copy">${esc(post.text)}</div>${post.image?`<img class="post-media" src="${esc(post.image)}" alt="${esc(post.imageAlt||"Post image")}" loading="lazy">`:""}<div class="post-metrics"><span>👍 ${liked?1:0} reactions</span><span>${comments.length} comments</span></div><div class="post-actions"><button class="${liked?"is-liked":""}" data-like="${esc(id)}">👍 ${liked?"Liked":"Like"}</button><button data-comment="${esc(id)}">▢ Comment</button><button data-share="${esc(id)}">↗ Share</button></div><div class="comment-list">${comments.map(c=>`<div class="comment"><b>${esc(c.user)}</b> ${esc(c.text)}</div>`).join("")}</div><form class="comment-form" data-comment-form="${esc(id)}"><input name="comment" placeholder="Write a comment…" aria-label="Write a comment" required maxlength="500"><button>Send</button></form></article>`}
+const seedPosts=[
+{id:"welcome",user:"My Babies",time:"Business announcement · Sample content",text:"Welcome to the My Babies community! Browse our product photos, ask us about current prices and availability, and use the WhatsApp enquiry button when you’re ready. Product prices and stock are confirmed directly with the business.",image:"assets/images/product-01.jpg",imageAlt:"Product photo from the supplied My Babies catalogue"},
+{id:"discover",user:"My Babies",time:"Featured collection · Sample content",text:"Looking for something for your little one? Explore our catalogue of 78 supplied product photographs. Product titles, prices and specifications need confirmation before purchase.",image:"assets/images/product-12.jpg",imageAlt:"Product photo from the supplied catalogue"}
+];
+function renderHome(){let posts=[...state.userPosts,...seedPosts];return `${header("Home feed","Welcome to the My Babies community.")}<section class="stories"><button class="story story-create" id="openComposer"><span class="story-plus">＋</span><b>Create a story</b><small>Share an update</small></button><button class="story" data-page="marketplace"><img src="assets/images/product-05.jpg" alt=""><span class="story-shade"></span><b>New finds</b></button><button class="story" data-page="watch"><div class="story-placeholder">▷</div><b>Watch & learn</b></button><button class="story" data-page="about"><div class="story-placeholder warm">MB</div><b>Our community</b></button></section>${composer()}<div class="feed-label"><h2>Latest posts</h2><span class="demo-label">Demo content is labelled</span></div>${posts.map(postCard).join("")}<section class="panel all-photos-panel"><div class="all-photos-heading"><div><h2>All My Babies photos</h2><p>Browse every product photo from the supplied catalogue.</p></div><button class="button outline" data-page="marketplace">Open marketplace ↗</button></div><div class="all-photos-grid">${PRODUCTS.map(p=>`<button class="all-photo-tile" data-product="${p.id}" aria-label="Open product ${p.id}"><img src="${p.image}" alt="${productName(p)}" loading="eager"><span>Product ${String(p.id).padStart(2,"0")}</span></button>`).join("")}</div></section>`}
+function productCard(p){return `<article class="product-card"><button class="product-photo" data-product="${p.id}" aria-label="View ${productName(p)}"><img src="${p.image}" alt="${productName(p)}" loading="lazy"><span class="photo-label">View details ↗</span></button><div class="product-info"><div class="product-number">PRODUCT ${String(p.id).padStart(2,"0")}</div><h3>${productName(p)}</h3><div class="price">Price on request</div><p>Ask us to confirm details, current pricing and availability.</p><div class="product-buttons"><button class="button outline" data-product="${p.id}">View product</button>${contactLink(p)}</div><button class="save-link ${state.saved.includes(p.id)?"saved":""}" data-save="${p.id}">${state.saved.includes(p.id)?"♥ Saved":"♡ Save product"}</button></div></article>`}
+function renderMarket(){let q=state.query.toLowerCase();let list=PRODUCTS.filter(p=>(!q||(`${productName(p)} ${p.original_name} product ${p.id}`).toLowerCase().includes(q))&&(state.category==="All"||state.category===`Product ${String(p.id).padStart(2,"0")}`));return `${header("Marketplace","Browse real product photographs supplied with your project.","<span class='catalogue-pill'>78 catalogue images</span>")}<section class="panel market-toolbar"><label class="market-search">⌕ <input id="marketSearch" value="${esc(state.query)}" placeholder="Search product number or filename"></label><label class="filter-label">Catalogue <select id="categoryFilter"><option>All</option>${PRODUCTS.map(p=>`<option ${state.category===`Product ${String(p.id).padStart(2,"0")}`?"selected":""}>Product ${String(p.id).padStart(2,"0")}</option>`).join("")}</select></label></section><div class="catalogue-notice">Prices, stock, product names and specifications are not included in the supplied catalogue. We’ve left them as “Price on request” instead of guessing.</div><div class="product-grid">${list.map(productCard).join("")}</div>${list.length?"":`<div class="empty-state panel"><span>⌕</span><h3>No products found</h3><p>Try a different product number or search term.</p><button class="button outline" id="clearSearch">Clear search</button></div>`}`}
+function renderWatch(){return `${header("Watch","Video discovery for product demonstrations, tutorials and business updates.")}<section class="panel watch-feature"><div class="video-empty"><div class="play-ring">▷</div><span>VIDEO LIBRARY READY</span></div><div class="watch-feature-copy"><div class="eyebrow">WATCH / VIDEOS</div><h2>Your next helpful video goes here.</h2><p>No video files were found in the supplied project ZIP. This video-ready section is intentionally labelled and does not pretend sample footage is real.</p><div class="feature-tags"><span>Product demos</span><span>Baby-care tips</span><span>Short videos</span></div></div></section><div class="section-title"><h2>Explore video categories</h2><span class="demo-label">Awaiting your videos</span></div><div class="video-categories"><article class="panel video-category"><div class="category-icon">▣</div><h3>Product demonstrations</h3><p>Show customers how a product works.</p><span class="status-pill">No videos added</span></article><article class="panel video-category"><div class="category-icon">✦</div><h3>Tips & tutorials</h3><p>Helpful educational videos for families.</p><span class="status-pill">No videos added</span></article><article class="panel video-category"><div class="category-icon">▷</div><h3>Short videos</h3><p>Vertical clips and quick product highlights.</p><span class="status-pill">No videos added</span></article></div><div class="catalogue-notice">To publish real videos, add licensed MP4/WebM files and poster thumbnails, then configure media storage for customer uploads. Video uploads and shared video comments need a backend.</div>`}
+function renderGroups(){const groups=[["Baby essentials & new finds","Share questions and discover products for everyday family life."],["Nursery inspiration","Ideas, essentials and practical nursery questions."],["Tips & parent community","A friendly place for helpful tips and community discussion."]];return `${header("Customer groups","Community spaces are ready to be connected to real member accounts.")}<div class="catalogue-notice">These are proposed community spaces, not live groups yet. Joining below is saved only in this browser preview.</div><div class="group-grid">${groups.map((g,i)=>`<article class="panel group-card"><div class="group-cover cover-${i}">${["♡","⌂","✦"][i]}</div><div class="group-content"><div class="eyebrow">CUSTOMER COMMUNITY</div><h2>${g[0]}</h2><p>${g[1]}</p><div class="group-meta">Private preview · Member count unavailable</div><button class="button ${state.joined.includes(i)?"outline":"primary"} wide" data-join="${i}">${state.joined.includes(i)?"Joined in this browser":"Join group"}</button></div></article>`).join("")}</div>`}
+function renderSaved(){let list=PRODUCTS.filter(p=>state.saved.includes(p.id));return `${header("Saved items","Products you’ve bookmarked in this browser.")}${list.length?`<div class="product-grid">${list.map(productCard).join("")}</div>`:`<div class="empty-state panel"><span>♡</span><h3>No saved products yet</h3><p>Save products from Marketplace to find them here.</p><button class="button primary" data-page="marketplace">Explore marketplace</button></div>`}`}
+function renderMessages(){return `${header("Messages","A simple contact hub for customer questions.")}<section class="panel message-preview"><div class="message-illustration">▤</div><h2>Talk to My Babies</h2><p>Live private messaging is not connected in this preview. Use WhatsApp to contact the business through the configured ordering channel.</p>${contactLink()}<div class="message-note">The business WhatsApp number has not been supplied in this project. Add it in <code>index.html</code> before publishing.</div></section>`}
+function renderNotifications(){let items=state.notifications;return `${header("Notifications","Activity generated in this browser preview.")}${items.length?items.map(n=>`<section class="panel notification-item"><span class="notice-icon">♡</span><div><b>${esc(n.title)}</b><p>${esc(n.text)}</p><small>${esc(n.time)}</small></div></section>`).join(""):`<div class="empty-state panel"><span>♧</span><h3>You’re all caught up</h3><p>No real notifications have been generated. Customer activity notifications require the shared backend.</p></div>`}`}
+function renderProfile(){return `${header("Business profile","A preview of the My Babies business identity.")}<section class="panel profile-panel"><div class="profile-cover"></div><div class="profile-main"><div class="profile-avatar">MB</div><div><h2>My Babies</h2><p>Baby • Nursery • Essentials</p><span class="demo-label">Business profile preview</span></div></div><div class="profile-bio">Browse baby and nursery product photos, ask about current pricing and availability, and contact the business to enquire about ordering.</div><div class="profile-buttons"><button class="button primary" data-page="marketplace">Browse products</button>${contactLink()}</div></section><div class="catalogue-notice">Customer registration, profile editing, profile photos, privacy settings and account deletion need authenticated backend services and database policies.</div>`}
+function renderAbout(){return `${header("About My Babies","Baby • Nursery • Essentials")}<section class="panel about-panel"><div class="business-logo large">MB</div><h2>Simple browsing for growing families.</h2><p>This project includes 78 supplied product images from the original My Babies website. Product names, prices, variants and stock status were not provided, so they are not fabricated here.</p><p>Location listed in the supplied site: 31 Gerard Sekoto St, Johannesburg, 2001, South Africa. Please confirm business details before publication.</p><div class="about-actions">${contactLink()}<a class="button outline" href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">Visit Facebook ↗</a>${FACEBOOK_PAGE_URL?`<a class="button outline" href="${esc(FACEBOOK_PAGE_URL)}" target="_blank" rel="noopener noreferrer">Visit Our Facebook Page ↗</a>`:""}</div></section>`}
+function render(){let root=document.getElementById("mainContent");let views={home:renderHome,marketplace:renderMarket,watch:renderWatch,groups:renderGroups,saved:renderSaved,messages:renderMessages,notifications:renderNotifications,profile:renderProfile,about:renderAbout};root.innerHTML=(views[state.page]||renderHome)();renderFeatured();wire();window.scrollTo({top:0,behavior:"smooth"})}
+function renderFeatured(){let root=document.getElementById("featuredProducts");root.innerHTML=[PRODUCTS[4],PRODUCTS[11],PRODUCTS[24]].map(p=>`<button class="featured-row" data-product="${p.id}"><img src="${p.image}" alt="" loading="lazy"><span><b>${productName(p)}</b><small>Price on request</small></span><strong>›</strong></button>`).join("")}
+function wire(){document.querySelectorAll("[data-page]").forEach(b=>b.onclick=()=>go(b.dataset.page));document.querySelectorAll("[data-product]").forEach(b=>b.onclick=()=>openProduct(+b.dataset.product));document.querySelectorAll("[data-save]").forEach(b=>b.onclick=()=>{let id=+b.dataset.save;state.saved=state.saved.includes(id)?state.saved.filter(x=>x!==id):[...state.saved,id];write("mb-saved",state.saved);render()});document.querySelectorAll("[data-like]").forEach(b=>b.onclick=()=>{let id=b.dataset.like;state.postLikes[id]=!state.postLikes[id];write("mb-likes",state.postLikes);render()});document.querySelectorAll("[data-comment]").forEach(b=>b.onclick=()=>{let form=document.querySelector(`[data-comment-form="${CSS.escape(b.dataset.comment)}"]`);form?.querySelector("input")?.focus()});document.querySelectorAll("[data-comment-form]").forEach(f=>f.onsubmit=e=>{e.preventDefault();let id=f.dataset.commentForm,text=f.comment.value.trim();if(!text)return;(state.comments[id]??=[]).push({user:"You",text});write("mb-comments",state.comments);f.comment.value="";render()});document.querySelectorAll("[data-share]").forEach(b=>b.onclick=async()=>{let url=location.href;try{if(navigator.share)await navigator.share({title:"My Babies Community",url});else{await navigator.clipboard.writeText(url);alert("Page link copied.")}}catch{}});document.querySelectorAll("[data-report]").forEach(b=>b.onclick=()=>{if(confirm("Report this post in the local preview?")){state.notifications.unshift({title:"Report noted locally",text:"This report is saved only in this browser. Real moderation requires a backend.",time:"Just now"});write("mb-notifications",state.notifications);alert("Saved locally. No report was sent to the business.")}});document.querySelectorAll("[data-join]").forEach(b=>b.onclick=()=>{let id=+b.dataset.join;state.joined=state.joined.includes(id)?state.joined.filter(x=>x!==id):[...state.joined,id];write("mb-groups",state.joined);render()});let ms=document.getElementById("marketSearch");if(ms)ms.oninput=e=>{state.query=e.target.value;let pos=e.target.selectionStart;render();let next=document.getElementById("marketSearch");next.focus();next.setSelectionRange(pos,pos)};let cf=document.getElementById("categoryFilter");if(cf)cf.onchange=e=>{state.category=e.target.value;render()};let clear=document.getElementById("clearSearch");if(clear)clear.onclick=()=>{state.query="";state.category="All";render()};["openComposer","writePost"].forEach(id=>document.getElementById(id)?.addEventListener("click",openComposer));}
+function openProduct(id){let p=PRODUCTS.find(x=>x.id===id);if(!p)return;state.activeProduct=p;showModal(`<div class="product-modal"><img src="${p.image}" alt="${productName(p)}"><div class="product-modal-copy"><div class="eyebrow">MY BABIES CATALOGUE</div><h2 id="modalTitle">${productName(p)}</h2><div class="price big">Price on request</div><p>This is product image ${String(p.id).padStart(2,"0")} from the supplied catalogue. The product name, exact specifications, price and stock status were not included in the source files.</p><p>Please ask the business to confirm details before ordering.</p><div class="modal-actions">${contactLink(p)}<button class="button outline" id="modalSave">${state.saved.includes(p.id)?"♥ Saved":"♡ Save product"}</button></div></div></div>`);document.getElementById("modalSave").onclick=()=>{state.saved=state.saved.includes(p.id)?state.saved.filter(x=>x!==p.id):[...state.saved,p.id];write("mb-saved",state.saved);closeModal();render()}}
+function openComposer(){showModal(`<div class="eyebrow">COMMUNITY POST</div><h2 id="modalTitle">Create a post</h2><p class="muted">This post will be saved in this browser preview only, not shared with other customers.</p><form id="postForm" class="post-form"><label>What would you like to share?<textarea name="text" rows="5" maxlength="1500" required placeholder="Write an update, tip or question…"></textarea></label><button class="button primary wide">Publish preview post</button></form>`);document.getElementById("postForm").onsubmit=e=>{e.preventDefault();let text=e.target.text.value.trim();if(!text)return;state.userPosts.unshift({id:"user-"+Date.now(),user:"You",time:"Just now · Local preview",text});write("mb-posts",state.userPosts);closeModal();go("home")}}
+function openMessage(title){showModal(`<div class="eyebrow">CUSTOMER SUPPORT</div><h2 id="modalTitle">${esc(title)}</h2><p>Live inbox messaging is not configured yet. You can still open WhatsApp with a prepared enquiry.</p>${contactLink()}<p class="message-note">Configure WHATSAPP_NUMBER in index.html with the verified business number to direct customers to the correct account.</p>`)}
+function showModal(content){document.getElementById("modalBody").innerHTML=content;let m=document.getElementById("modal");m.classList.add("open");m.setAttribute("aria-hidden","false");document.body.classList.add("modal-open")}
+function closeModal(){let m=document.getElementById("modal");m.classList.remove("open");m.setAttribute("aria-hidden","true");document.body.classList.remove("modal-open")}
+document.querySelectorAll("[data-close]").forEach(b=>b.addEventListener("click",closeModal));document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+render();
+</script>
+</body></html>

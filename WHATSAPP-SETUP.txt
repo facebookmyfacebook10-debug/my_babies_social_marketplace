@@ -1,0 +1,11 @@
+MY BABIES WHATSAPP SETUP
+
+1. Open index.html in a text editor.
+2. Find: const WHATSAPP_NUMBER = "";
+3. Enter the verified business WhatsApp number in international format, digits
+   only. South African example: 27821234567 (no +, spaces or leading 0).
+4. Save and test a product enquiry button. Opening WhatsApp does not complete
+   an order; the customer still needs to review and send the message.
+
+The number was not configured in the supplied files, so this project leaves it
+blank rather than inventing a contact number.
